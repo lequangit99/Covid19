@@ -68,12 +68,9 @@ public class MainActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
 
-        if (currentUser == null)
-        {
+        if (currentUser == null) {
             SendToLoginActivity();
-        }
-        else
-        {
+        } else {
 
             VerifyUserExistance();
         }
@@ -85,14 +82,10 @@ public class MainActivity extends AppCompatActivity {
 
         RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot)
-            {
-                if ((dataSnapshot.child("name").exists()))
-                {
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if ((dataSnapshot.child("name").exists())) {
                     Toast.makeText(MainActivity.this, ":v Hello", Toast.LENGTH_SHORT).show();
-                }
-                else
-                {
+                } else {
                     SendToSettingsActivity();
                 }
             }
@@ -108,17 +101,22 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         super.onOptionsItemSelected(item);
 
-        if (item.getItemId() == R.id.main_logout_option){
+        if (item.getItemId() == R.id.main_logout_option) {
             mAuth.signOut();
             SendToLoginActivity();
         }
-        if (item.getItemId()==R.id.main_find_friends_option){
-
+        if (item.getItemId() == R.id.main_find_friends_option) {
+            SendToFindFriends();
         }
-        if (item.getItemId()==R.id.main_settings_option){
+        if (item.getItemId() == R.id.main_settings_option) {
             SendToSettingsActivity();
         }
         return true;
+    }
+
+    private void SendToFindFriends() {
+        Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
     }
 
     private void SendToSettingsActivity() {

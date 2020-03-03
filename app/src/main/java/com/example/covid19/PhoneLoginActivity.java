@@ -47,10 +47,10 @@ public class PhoneLoginActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
 
-        SendVerificationCodeButton = (Button) findViewById(R.id.send_ver_code_button);
-        VerifyButton = (Button) findViewById(R.id.verify_button);
-        InputPhoneNumber = (EditText) findViewById(R.id.phone_nnumber_input);
-        InputVerificationCode = (EditText) findViewById(R.id.verification_code_input);
+        SendVerificationCodeButton = findViewById(R.id.send_ver_code_button);
+        VerifyButton = findViewById(R.id.verify_button);
+        InputPhoneNumber = findViewById(R.id.phone_nnumber_input);
+        InputVerificationCode = findViewById(R.id.verification_code_input);
         loadingBar = new ProgressDialog(this);
 
 

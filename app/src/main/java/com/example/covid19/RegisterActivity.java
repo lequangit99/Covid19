@@ -107,10 +107,10 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void InitializeFields() {
-        RegButton = (Button) findViewById(R.id.register_button);
-        RegEmail = (EditText) findViewById(R.id.reg_email);
-        RegPasswd = (EditText) findViewById(R.id.reg_password);
-        AlreadyHaveAcc = (TextView) findViewById(R.id.already_have_acc);
+        RegButton = findViewById(R.id.register_button);
+        RegEmail = findViewById(R.id.reg_email);
+        RegPasswd = findViewById(R.id.reg_password);
+        AlreadyHaveAcc = findViewById(R.id.already_have_acc);
         progressDialog = new ProgressDialog(this);
     }
 }

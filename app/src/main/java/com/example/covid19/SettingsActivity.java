@@ -282,13 +282,13 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void InitializeFields() {
-        UpdateAccSettings = (Button) findViewById(R.id.update_settings_button);
-        userName = (EditText) findViewById(R.id.set_user_name);
-        userStatus = (EditText) findViewById(R.id.set_profile_status);
-        userProfileImage = (CircleImageView) findViewById(R.id.set_profile_image);
+        UpdateAccSettings = findViewById(R.id.update_settings_button);
+        userName = findViewById(R.id.set_user_name);
+        userStatus = findViewById(R.id.set_profile_status);
+        userProfileImage = findViewById(R.id.set_profile_image);
         loadingBar = new ProgressDialog(this);
 
-        SettingsToolBar = (Toolbar) findViewById(R.id.settings_toolbar);
+        SettingsToolBar = findViewById(R.id.settings_toolbar);
         setSupportActionBar(SettingsToolBar);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowCustomEnabled(true);

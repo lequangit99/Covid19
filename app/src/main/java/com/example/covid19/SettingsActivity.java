@@ -196,7 +196,6 @@ public class SettingsActivity extends AppCompatActivity {
 
                 StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
 
-
                 final UploadTask uploadTask = filePath.putFile(resultUri);
 
                 uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {

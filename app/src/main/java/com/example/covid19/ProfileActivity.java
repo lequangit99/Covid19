@@ -3,6 +3,8 @@ package com.example.covid19;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -27,10 +29,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private CircleImageView userProfileImage;
     private TextView userProfileName, userProfileStatus;
-    private Button SendMessRequestButton;
+    private Button SendMessRequestButton, DeclineMessRequestButton;
     private FirebaseAuth mAuth;
 
-    private DatabaseReference UserRef, ChatRequestRef;
+    private DatabaseReference UserRef, ChatRequestRef, ContactsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,6 +41,7 @@ public class ProfileActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         ChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
+        ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts Requests");
 
         userID = getIntent().getExtras().get("userID").toString();
         senderUserID = mAuth.getCurrentUser().getUid();
@@ -49,6 +52,7 @@ public class ProfileActivity extends AppCompatActivity {
         userProfileName = (TextView) findViewById(R.id.visit_user_name);
         userProfileStatus = (TextView) findViewById(R.id.visit_profile_status);
         SendMessRequestButton = (Button) findViewById(R.id.send_message_request_button);
+        DeclineMessRequestButton = (Button) findViewById(R .id.decline_message_request_button);
         current_State = "new";
 
         RetrieveUserInfo();
@@ -101,6 +105,35 @@ public class ProfileActivity extends AppCompatActivity {
                         current_State = "request_sent";
                         SendMessRequestButton.setText("Huỷ yêu cầu");
                     }
+                    else if (request_type.equals("received")){
+                        current_State = "request_received";
+                        SendMessRequestButton.setText("Chấp nhận");
+                        DeclineMessRequestButton.setVisibility(View.VISIBLE);
+                        DeclineMessRequestButton.setEnabled(true);
+
+                        DeclineMessRequestButton.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                CancelChatRequest();
+                            }
+                        });
+                    }
+                }
+                else {
+                    ContactsRef.child(senderUserID).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.hasChild(userID)){
+                                current_State = "friends";
+                                SendMessRequestButton.setText("Xoá bạn bè");
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                        }
+                    });
                 }
             }
 
@@ -122,12 +155,88 @@ public class ProfileActivity extends AppCompatActivity {
                     if (current_State.equals("request_sent")){
                         CancelChatRequest();
                     }
+                    if (current_State.equals("request_received")){
+                        AcceptChatRequest();
+                    }
+                    if (current_State.equals("friends")){
+                        RemoveContacts();
+                    }
                 }
             });
         }
         else {
             SendMessRequestButton.setVisibility((View.INVISIBLE));
         }
+    }
+
+    private void RemoveContacts() {
+        final AlertDialog.Builder alertBuilder = new AlertDialog.Builder(this);
+        alertBuilder.setTitle("Xác nhận xoá");
+        alertBuilder.setIcon(R.mipmap.ic_launcher);
+        alertBuilder.setMessage("Bạn có muốn xoá người này không ?");
+
+        alertBuilder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                ContactsRef.child(senderUserID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()){
+                            ContactsRef.child(userID).child(senderUserID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()){
+                                        SendMessRequestButton.setEnabled(true);
+                                        current_State = "new";
+                                        SendMessRequestButton.setText("Kết bạn");
+
+                                        DeclineMessRequestButton.setVisibility(View.INVISIBLE);
+                                        DeclineMessRequestButton.setEnabled(false);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                });
+            }
+        });
+
+
+        alertBuilder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                finish();
+            }
+        });
+        alertBuilder.show();
+    }
+
+    private void AcceptChatRequest() {
+        ContactsRef.child(senderUserID).child(userID).child("Contacts").setValue("Saved").addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()){
+                    ChatRequestRef.child(senderUserID).child(userID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            if (task.isSuccessful()){
+                                ChatRequestRef.child(userID).child(senderUserID).removeValue().addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        SendMessRequestButton.setEnabled(true);
+                                        current_State = "friends";
+                                        SendMessRequestButton.setText("Xoá bạn bè");
+
+                                        DeclineMessRequestButton.setVisibility(View.INVISIBLE);
+                                        DeclineMessRequestButton.setEnabled(false);
+                                    }
+                                });
+                            }
+                        }
+                    });
+                }
+            }
+        });
     }
 
     private void CancelChatRequest() {
@@ -141,7 +250,10 @@ public class ProfileActivity extends AppCompatActivity {
                             if (task.isSuccessful()){
                                 SendMessRequestButton.setEnabled(true);
                                 current_State = "new";
-                                SendMessRequestButton.setText("Gửi tin nhắn");
+                                SendMessRequestButton.setText("Kết bạn");
+
+                                DeclineMessRequestButton.setVisibility(View.INVISIBLE);
+                                DeclineMessRequestButton.setEnabled(false);
                             }
                         }
                     });

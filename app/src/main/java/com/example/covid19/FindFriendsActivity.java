@@ -101,7 +101,7 @@ public class FindFriendsActivity extends AppCompatActivity {
             super(itemView);
 
             userName = (TextView) itemView.findViewById(R.id.user_profile_name);
-            userStatus = (TextView) itemView.findViewById(R.id.user_profile_status);
+            userStatus = (TextView) itemView.findViewById(R.id.user_status);
             profileImage = (CircleImageView) itemView.findViewById(R.id.users_profile_image);
         }
     }

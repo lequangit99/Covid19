@@ -38,7 +38,6 @@ public class ChatsFragment extends Fragment
     private FirebaseAuth mAuth;
     private String currentUserID="";
 
-
     public ChatsFragment() {
         // Required empty public constructor
     }
@@ -101,6 +100,7 @@ public class ChatsFragment extends Fragment
                                     final String retStatus = dataSnapshot.child("status").getValue().toString();
 
                                     holder.userName.setText(retName);
+                                    holder.userStatus.setText("Hoạt động: ");
 
 
                                     if (dataSnapshot.child("userState").hasChild("state"))

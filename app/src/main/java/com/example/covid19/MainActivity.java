@@ -1,11 +1,15 @@
 package com.example.covid19;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.Calendar;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,73 +24,112 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.HashMap;
 import java.util.Objects;
 
-public class MainActivity extends AppCompatActivity {
-
+public class MainActivity extends AppCompatActivity
+{
     private Toolbar mToolbar;
-    private ViewPager mViewPager;
-    private TabLayout mTabLayout;
-    private TabsAccessorAdapter tabsAccessorAdapter;
+    private ViewPager myViewPager;
+    private TabLayout myTabLayout;
+    private TabsAccessorAdapter myTabsAccessorAdapter;
 
-    private FirebaseAuth mAuth;
     private FirebaseUser currentUser;
-
+    private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
+    private String currentUserID;
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         mAuth = FirebaseAuth.getInstance();
         currentUser = mAuth.getCurrentUser();
+        currentUserID = mAuth.getCurrentUser().getUid();
         RootRef = FirebaseDatabase.getInstance().getReference();
+
 
         mToolbar = (Toolbar) findViewById(R.id.main_page_toolbar);
         setSupportActionBar(mToolbar);
-        Objects.requireNonNull(getSupportActionBar()).setTitle("Covid-19");
-
-        mViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
-        tabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
-        mViewPager.setAdapter(tabsAccessorAdapter);
+        getSupportActionBar().setTitle("WhatsApp");
 
 
-        mTabLayout = (TabLayout) findViewById(R.id.main_tabs);
-        mTabLayout.setupWithViewPager(mViewPager);
+        myViewPager = (ViewPager) findViewById(R.id.main_tabs_pager);
+        myTabsAccessorAdapter = new TabsAccessorAdapter(getSupportFragmentManager());
+        myViewPager.setAdapter(myTabsAccessorAdapter);
 
+
+        myTabLayout = (TabLayout) findViewById(R.id.main_tabs);
+        myTabLayout.setupWithViewPager(myViewPager);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getMenuInflater().inflate(R.menu.options_menu, menu);
-        return true;
-    }
 
+    @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
-    protected void onStart() {
+    protected void onStart()
+    {
         super.onStart();
 
-        if (currentUser == null) {
-            SendToLoginActivity();
-        } else {
+        if (currentUser == null)
+        {
+            SendUserToLoginActivity();
+        }
+        else
+        {
+            updateUserStatus("online");
 
             VerifyUserExistance();
         }
-
     }
 
-    private void VerifyUserExistance() {
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onStop()
+    {
+        super.onStop();
+
+        if (currentUser != null)
+        {
+            updateUserStatus("offline");
+        }
+    }
+
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    @Override
+    protected void onDestroy()
+    {
+        super.onDestroy();
+
+        if (currentUser != null)
+        {
+            updateUserStatus("offline");
+        }
+    }
+
+
+
+    private void VerifyUserExistance()
+    {
         String currentUserID = mAuth.getCurrentUser().getUid();
 
         RootRef.child("Users").child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                if ((dataSnapshot.child("name").exists())) {
-                    Toast.makeText(MainActivity.this, ":v Hello", Toast.LENGTH_SHORT).show();
-                } else {
-                    SendToSettingsActivity();
+            public void onDataChange(DataSnapshot dataSnapshot)
+            {
+                if ((dataSnapshot.child("name").exists()))
+                {
+                    Toast.makeText(MainActivity.this, "Welcome", Toast.LENGTH_SHORT).show();
+                }
+                else
+                {
+                    SendUserToSettingsActivity();
                 }
             }
 
@@ -97,37 +140,87 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        super.onOptionsItemSelected(item);
 
-        if (item.getItemId() == R.id.main_logout_option) {
-            mAuth.signOut();
-            SendToLoginActivity();
-        }
-        if (item.getItemId() == R.id.main_find_friends_option) {
-            SendToFindFriends();
-        }
-        if (item.getItemId() == R.id.main_settings_option) {
-            SendToSettingsActivity();
-        }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        super.onCreateOptionsMenu(menu);
+
+        getMenuInflater().inflate(R.menu.options_menu, menu);
+
         return true;
     }
 
-    private void SendToFindFriends() {
-        Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
-        startActivity(findFriendsIntent);
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
+        super.onOptionsItemSelected(item);
+
+        if (item.getItemId() == R.id.main_logout_option)
+        {
+            updateUserStatus("offline");
+            mAuth.signOut();
+            SendUserToLoginActivity();
+        }
+        if (item.getItemId() == R.id.main_settings_option)
+        {
+            SendUserToSettingsActivity();
+        }
+        if (item.getItemId() == R.id.main_find_friends_option)
+        {
+            SendUserToFindFriendsActivity();
+        }
+
+        return true;
     }
 
-    private void SendToSettingsActivity() {
+
+
+
+    private void SendUserToLoginActivity()
+    {
+        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
+        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        startActivity(loginIntent);
+
+    }
+
+    private void SendUserToSettingsActivity()
+    {
         Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
     }
 
-    private void SendToLoginActivity() {
-        Intent loginIntent = new Intent(MainActivity.this, LoginActivity.class);
-        loginIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        startActivity(loginIntent);
-        finish();
+
+    private void SendUserToFindFriendsActivity()
+    {
+        Intent findFriendsIntent = new Intent(MainActivity.this, FindFriendsActivity.class);
+        startActivity(findFriendsIntent);
+    }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    private void updateUserStatus(String state)
+    {
+        String saveCurrentTime, saveCurrentDate;
+
+        Calendar calendar = Calendar.getInstance();
+
+        SimpleDateFormat currentDate = new SimpleDateFormat("MMM dd, yyyy");
+        saveCurrentDate = currentDate.format(calendar.getTime());
+
+        SimpleDateFormat currentTime = new SimpleDateFormat("hh:mm a");
+        saveCurrentTime = currentTime.format(calendar.getTime());
+
+        HashMap<String, Object> onlineStateMap = new HashMap<>();
+        onlineStateMap.put("time", saveCurrentTime);
+        onlineStateMap.put("date", saveCurrentDate);
+        onlineStateMap.put("state", state);
+
+        RootRef.child("Users").child(currentUserID).child("userState")
+                .updateChildren(onlineStateMap);
+
     }
 }

@@ -118,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onComplete(@NonNull Task<AuthResult> task) {
                     if (task.isSuccessful()) {
+
+                        String currentUserId = mAuth.getCurrentUser().getUid();
+
                         Toast.makeText(LoginActivity.this, "Đăng nhập thành công", Toast.LENGTH_SHORT).show();
                         SendToMainActivity();
                         progressDialog.dismiss();

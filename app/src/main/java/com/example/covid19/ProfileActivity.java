@@ -21,6 +21,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashMap;
+
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileActivity extends AppCompatActivity {
@@ -270,6 +272,9 @@ public class ProfileActivity extends AppCompatActivity {
                     ChatRequestRef.child(userID).child(senderUserID).child("request_type").setValue("received").addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            HashMap<String, String> chatNotification = new HashMap<>();
+                            chatNotification.put("from", senderUserID);
+                            chatNotification.put("type", "request");
                             SendMessRequestButton.setEnabled(true);
                             current_State = "request_sent";
                             SendMessRequestButton.setText("Huỷ yêu cầu");

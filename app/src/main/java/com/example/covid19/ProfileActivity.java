@@ -34,7 +34,7 @@ public class ProfileActivity extends AppCompatActivity {
     private Button SendMessRequestButton, DeclineMessRequestButton;
     private FirebaseAuth mAuth;
 
-    private DatabaseReference UserRef, ChatRequestRef, ContactsRef, NotificationRef;
+    private DatabaseReference UserRef, ChatRequestRef, ContactsRef;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +44,6 @@ public class ProfileActivity extends AppCompatActivity {
         UserRef = FirebaseDatabase.getInstance().getReference().child("Users");
         ChatRequestRef = FirebaseDatabase.getInstance().getReference().child("Chat Requests");
         ContactsRef = FirebaseDatabase.getInstance().getReference().child("Contacts Requests");
-        NotificationRef = FirebaseDatabase.getInstance().getReference().child("Notifications");
 
         userID = getIntent().getExtras().get("userID").toString();
         senderUserID = mAuth.getCurrentUser().getUid();
@@ -276,17 +275,9 @@ public class ProfileActivity extends AppCompatActivity {
                             HashMap<String, String> chatNotification = new HashMap<>();
                             chatNotification.put("from", senderUserID);
                             chatNotification.put("type", "request");
-
-                            NotificationRef.child(userID).push().setValue(chatNotification).addOnCompleteListener(new OnCompleteListener<Void>() {
-                                @Override
-                                public void onComplete(@NonNull Task<Void> task) {
-                                    if (task.isSuccessful()){
-                                        SendMessRequestButton.setEnabled(true);
-                                        current_State = "request_sent";
-                                        SendMessRequestButton.setText("Huỷ yêu cầu");
-                                    }
-                                }
-                            });
+                            SendMessRequestButton.setEnabled(true);
+                            current_State = "request_sent";
+                            SendMessRequestButton.setText("Huỷ yêu cầu");
                         }
                     });
                 }

@@ -15,7 +15,8 @@
         android:theme="@style/AppTheme">
         <activity android:name=".ChatActivity"
             android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".ProfileActivity"
+            android:parentActivityName=".FindFriendsActivity"/>
         <activity
             android:name=".FindFriendsActivity"
             android:parentActivityName=".MainActivity" />
@@ -23,6 +24,7 @@
         <activity
             android:name=".SettingsActivity"
             android:parentActivityName=".MainActivity" />
+
         <activity android:name=".RegisterActivity" />
         <activity android:name=".LoginActivity" />
         <activity android:name=".MainActivity">

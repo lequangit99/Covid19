@@ -57,7 +57,7 @@ public class ChatsFragment extends Fragment
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
 
-        chatsList = (RecyclerView) PrivateChatsView.findViewById(R.id.chats_list);
+        chatsList = PrivateChatsView.findViewById(R.id.chats_list);
         chatsList.setLayoutManager(new LinearLayoutManager(getContext()));
 
 

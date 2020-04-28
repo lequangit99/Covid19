@@ -120,7 +120,7 @@ public class ChatActivity extends AppCompatActivity
         SendFilesButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CharSequence options[] = new CharSequence[]
+                CharSequence[] options = new CharSequence[]
                         {
                                 "Hình ảnh",
                                 "Tài liệu PDF",
@@ -141,20 +141,20 @@ public class ChatActivity extends AppCompatActivity
                             startActivityForResult(Intent.createChooser(intent, "Chọn hình ảnh"), 438);
                         }
                         if (which == 1){
-                            checker = "pdf";
-
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            intent.setType("application/pdf");
-                            startActivityForResult(Intent.createChooser(intent, "Chọn tài liệu PDF"), 438);
+//                            checker = "pdf";
+//
+//                            Intent intent = new Intent();
+//                            intent.setAction(Intent.ACTION_GET_CONTENT);
+//                            intent.setType("application/pdf");
+//                            startActivityForResult(Intent.createChooser(intent, "Chọn tài liệu PDF"), 438);
                         }
                         if (which == 2){
                             checker = "docx";
 
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_GET_CONTENT);
-                            intent.setType("application/msword");
-                            startActivityForResult(Intent.createChooser(intent, "Chọn tài liệu Word"), 438);
+//                            Intent intent = new Intent();
+//                            intent.setAction(Intent.ACTION_GET_CONTENT);
+//                            intent.setType("application/msword");
+//                            startActivityForResult(Intent.createChooser(intent, "Chọn tài liệu Word"), 438);
                         }
                     }
                 });
@@ -169,7 +169,7 @@ public class ChatActivity extends AppCompatActivity
     @RequiresApi(api = Build.VERSION_CODES.N)
     private void IntializeControllers()
     {
-        ChatToolBar = (Toolbar) findViewById(R.id.chat_toolbar);
+        ChatToolBar = findViewById(R.id.chat_toolbar);
         setSupportActionBar(ChatToolBar);
 
         ActionBar actionBar = getSupportActionBar();
@@ -180,16 +180,16 @@ public class ChatActivity extends AppCompatActivity
         View actionBarView = layoutInflater.inflate(R.layout.custom_chat_bar, null);
         actionBar.setCustomView(actionBarView);
 
-        userName = (TextView) findViewById(R.id.custom_profile_name);
-        userLastSeen = (TextView) findViewById(R.id.custom_user_last_seen);
-        userImage = (CircleImageView) findViewById(R.id.custom_profile_image);
+        userName = findViewById(R.id.custom_profile_name);
+        userLastSeen = findViewById(R.id.custom_user_last_seen);
+        userImage = findViewById(R.id.custom_profile_image);
 
-        SendMessageButton = (ImageButton) findViewById(R.id.send_message_btn);
-        SendFilesButton = (ImageButton) findViewById(R.id.send_files_btn);
-        MessageInputText = (EditText) findViewById(R.id.input_message);
+        SendMessageButton = findViewById(R.id.send_message_btn);
+        SendFilesButton = findViewById(R.id.send_files_btn);
+        MessageInputText = findViewById(R.id.input_message);
 
         messageAdapter = new MessageAdapter(messagesList);
-        userMessagesList = (RecyclerView) findViewById(R.id.private_messages_list_of_users);
+        userMessagesList = findViewById(R.id.private_messages_list_of_users);
         linearLayoutManager = new LinearLayoutManager(this);
         userMessagesList.setLayoutManager(linearLayoutManager);
         userMessagesList.setAdapter(messageAdapter);

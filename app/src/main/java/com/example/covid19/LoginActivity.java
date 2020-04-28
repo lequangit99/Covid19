@@ -67,12 +67,12 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void InitializeFields() {
-        LoginButton = (Button) findViewById(R.id.login_button);
-        PhoneLoginButton = (Button) findViewById(R.id.phone_login_button);
-        UserEmail = (EditText) findViewById(R.id.login_email);
-        UserPasswd = (EditText) findViewById(R.id.login_password);
-        NewAcc = (TextView) findViewById(R.id.new_account);
-        ForgetPasswd = (TextView) findViewById(R.id.forget_password_link);
+        LoginButton = findViewById(R.id.login_button);
+        PhoneLoginButton = findViewById(R.id.phone_login_button);
+        UserEmail = findViewById(R.id.login_email);
+        UserPasswd = findViewById(R.id.login_password);
+        NewAcc = findViewById(R.id.new_account);
+        ForgetPasswd = findViewById(R.id.forget_password_link);
         progressDialog = new ProgressDialog(this);
     }
 

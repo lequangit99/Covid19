@@ -35,14 +35,14 @@ public class FindFriendsActivity extends AppCompatActivity {
 
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
 
-        mToolbar = (Toolbar) findViewById(R.id.find_friends_toolbar);
+        mToolbar = findViewById(R.id.find_friends_toolbar);
         setSupportActionBar(mToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         getSupportActionBar().setTitle("Tìm bạn bè");
 
 
-        FFRecyclerView = (RecyclerView) findViewById(R.id.find_friends_recycler_list);
+        FFRecyclerView = findViewById(R.id.find_friends_recycler_list);
         FFRecyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 
@@ -100,9 +100,9 @@ public class FindFriendsActivity extends AppCompatActivity {
         public FindFriendViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            userName = (TextView) itemView.findViewById(R.id.user_profile_name);
-            userStatus = (TextView) itemView.findViewById(R.id.user_status);
-            profileImage = (CircleImageView) itemView.findViewById(R.id.users_profile_image);
+            userName = itemView.findViewById(R.id.user_profile_name);
+            userStatus = itemView.findViewById(R.id.user_status);
+            profileImage = itemView.findViewById(R.id.users_profile_image);
         }
     }
 }

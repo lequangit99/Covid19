@@ -2,17 +2,24 @@ package com.example.covid19;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -33,6 +40,7 @@ import com.squareup.picasso.Picasso;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -41,16 +49,20 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class SettingsActivity extends AppCompatActivity {
 
     private Button UpdateAccSettings;
-    private EditText userName, userStatus;
+    private EditText userName, userStatus, soDienThoai, diaChi;
     private CircleImageView userProfileImage;
+    private TextView ngaySinh;
+    private RadioButton rNam, rNu, rKhac;
 
-    private String currentUserID;
+    private String currentUserID, Sex;
     private FirebaseAuth mAuth;
     private DatabaseReference RootRef;
 
     private static final int GalleryPick = 1;
     private StorageReference UserProfileImagesRef;
     private ProgressDialog loadingBar;
+    private DatePickerDialog datePickerDialog;
+    private Calendar calendar;
 
     private Toolbar SettingsToolBar;
 
@@ -87,6 +99,48 @@ public class SettingsActivity extends AppCompatActivity {
 
         RetrieveUserInfo();
 
+
+        //Ngay Sinh
+        ngaySinh.setOnClickListener(new View.OnClickListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
+            @Override
+            public void onClick(View v) {
+                calendar = Calendar.getInstance();
+                int ngay = calendar.get(Calendar.DAY_OF_MONTH);
+                int thang = calendar.get(Calendar.MONTH);
+                int nam = calendar.get(Calendar.YEAR);
+
+                datePickerDialog = new DatePickerDialog(SettingsActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                        ngaySinh.setText(dayOfMonth+"/"+month+"/"+year);
+                    }
+                }, ngay, thang , nam);
+                datePickerDialog.show();
+            }
+        });
+
+        soDienThoai.setInputType(InputType.TYPE_CLASS_PHONE);
+
+        //Gioi Tinh
+        rNam.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Sex = "nam";
+            }
+        });
+        rNu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Sex = "nu";
+            }
+        });
+        rKhac.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Sex = "khac";
+            }
+        });
     }
 
     private void RetrieveUserInfo() {
@@ -100,23 +154,56 @@ public class SettingsActivity extends AppCompatActivity {
                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                             String retrievesStatus = dataSnapshot.child("status").getValue().toString();
                             String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
+                            String retrievePhoneNumber = dataSnapshot.child("phone").getValue().toString();
+                            String retrieveNgaySinh = dataSnapshot.child("ngaysinh").getValue().toString();
+                            String retrieveSex = dataSnapshot.child("sex").getValue().toString();
+                            String retrieveDiaChi = dataSnapshot.child("diachi").getValue().toString();
+
 
                             userName.setText(retrieveUserName);
                             userStatus.setText(retrievesStatus);
+                            soDienThoai.setText(retrievePhoneNumber);
+                            if (retrieveSex.equals("nu")){
+                                rNu.setChecked(true);
+                            }
+                            if (retrieveSex.equals("nam")){
+                                rNam.setChecked(true);
+                            }
+                            if (retrieveSex.equals("khac")){
+                                rKhac.setChecked(true);
+                            }
+                            ngaySinh.setText(retrieveNgaySinh);
+                            diaChi.setText(retrieveDiaChi);
                             Picasso.get().load(retrieveProfileImage).into(userProfileImage);
                         }
                         else if ((dataSnapshot.exists()) && (dataSnapshot.hasChild("name")))
                         {
                             String retrieveUserName = dataSnapshot.child("name").getValue().toString();
                             String retrievesStatus = dataSnapshot.child("status").getValue().toString();
+                            String retrievePhoneNumber = dataSnapshot.child("phone").getValue().toString();
+                            String retrieveNgaySinh = dataSnapshot.child("ngaysinh").getValue().toString();
+                            String retrieveSex = dataSnapshot.child("sex").getValue().toString();
+                            String retrieveDiaChi = dataSnapshot.child("diachi").getValue().toString();
+
 
                             userName.setText(retrieveUserName);
                             userStatus.setText(retrievesStatus);
+                            soDienThoai.setText(retrievePhoneNumber);
+                            if (retrieveSex.equals("nu")){
+                                rNu.isChecked();
+                            }
+                            if (retrieveSex.equals("nam")){
+                                rNam.isChecked();
+                            }
+                            if (retrieveSex.equals("khac")){
+                                rNu.isChecked();
+                            }
+                            ngaySinh.setText(retrieveNgaySinh);
+                            diaChi.setText(retrieveDiaChi);
                         }
                         else
                         {
                             userName.setVisibility(View.VISIBLE);
-                            Toast.makeText(SettingsActivity.this, "Hãy cập nhật thông tin cá nhân", Toast.LENGTH_SHORT).show();
                         }
                     }
 
@@ -130,6 +217,9 @@ public class SettingsActivity extends AppCompatActivity {
     private void UpdateSettings() {
         String setUserName = userName.getText().toString();
         String setStatus = userStatus.getText().toString();
+        String setStd = soDienThoai.getText().toString();
+        String setNgaySinh = ngaySinh.getText().toString();
+        String setDiaChi = diaChi.getText().toString();
 
         if (TextUtils.isEmpty(setUserName))
         {
@@ -137,7 +227,19 @@ public class SettingsActivity extends AppCompatActivity {
         }
         if (TextUtils.isEmpty(setStatus))
         {
-            Toast.makeText(this, "Nhập vài trạng thái của bạn...", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Nhập vào trạng thái của bạn...", Toast.LENGTH_SHORT).show();
+        }
+        if (TextUtils.isEmpty(setStd))
+        {
+            Toast.makeText(this, "Nhập vào số điện thoại của bạn...", Toast.LENGTH_SHORT).show();
+        }
+        if (TextUtils.isEmpty(setNgaySinh))
+        {
+            Toast.makeText(this, "Vui lòng chọn ngày sinh", Toast.LENGTH_SHORT).show();
+        }
+        if (TextUtils.isEmpty(setDiaChi))
+        {
+            Toast.makeText(this, "Nhập vào đại chi của bạn...", Toast.LENGTH_SHORT).show();
         }
         else
         {
@@ -145,6 +247,11 @@ public class SettingsActivity extends AppCompatActivity {
             profileMap.put("uid", currentUserID);
             profileMap.put("name", setUserName);
             profileMap.put("status", setStatus);
+            profileMap.put("phone", setStd);
+            profileMap.put("sex", Sex);
+            profileMap.put("ngaysinh", setNgaySinh);
+            profileMap.put("diachi", setDiaChi);
+
             RootRef.child("Users").child(currentUserID).updateChildren(profileMap)
                     .addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
@@ -158,7 +265,7 @@ public class SettingsActivity extends AppCompatActivity {
                             else
                             {
                                 String message = Objects.requireNonNull(task.getException()).toString();
-                                Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
+                                Toast.makeText(SettingsActivity.this, "Lỗi: " + message, Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -192,7 +299,6 @@ public class SettingsActivity extends AppCompatActivity {
                 loadingBar.show();
 
                 Uri resultUri = result.getUri();
-
 
                 StorageReference filePath = UserProfileImagesRef.child(currentUserID + ".jpg");
 
@@ -229,46 +335,6 @@ public class SettingsActivity extends AppCompatActivity {
                         });
                     }
                 });
-
-//                filePath.putFile(resultUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task)
-//                    {
-//                        if (task.isSuccessful())
-//                        {
-//                            Toast.makeText(SettingsActivity.this, "Profile Image uploaded Successfully...", Toast.LENGTH_SHORT).show();
-//
-//                            final String downloaedUrl = task.getResult().getDownloadUrl().toString();
-//
-//
-//                            RootRef.child("Users").child(currentUserID).child("image")
-//                                    .setValue(downloaedUrl)
-//                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
-//                                        @Override
-//                                        public void onComplete(@NonNull Task<Void> task)
-//                                        {
-//                                            if (task.isSuccessful())
-//                                            {
-//                                                Toast.makeText(SettingsActivity.this, "Image save in Database, Successfully...", Toast.LENGTH_SHORT).show();
-//                                                loadingBar.dismiss();
-//                                            }
-//                                            else
-//                                            {
-//                                                String message = task.getException().toString();
-//                                                Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-//                                                loadingBar.dismiss();
-//                                            }
-//                                        }
-//                                    });
-//                        }
-//                        else
-//                        {
-//                            String message = task.getException().toString();
-//                            Toast.makeText(SettingsActivity.this, "Error: " + message, Toast.LENGTH_SHORT).show();
-//                            loadingBar.dismiss();
-//                        }
-//                    }
-//                });
             }
         }
     }
@@ -285,6 +351,14 @@ public class SettingsActivity extends AppCompatActivity {
         userName = findViewById(R.id.set_user_name);
         userStatus = findViewById(R.id.set_profile_status);
         userProfileImage = findViewById(R.id.set_profile_image);
+        ngaySinh = findViewById(R.id.txt_chon_ngaysinh);
+        soDienThoai = (EditText) findViewById(R.id.set_profile_sdt);
+        diaChi = findViewById(R.id.set_profile_diachi);
+
+        rNam = findViewById(R.id.select_nam);
+        rNu = findViewById(R.id.select_nu);
+        rKhac = findViewById(R.id.select_khac);
+
         loadingBar = new ProgressDialog(this);
 
         SettingsToolBar = findViewById(R.id.settings_toolbar);

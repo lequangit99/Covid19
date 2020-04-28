@@ -4,57 +4,225 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/profile_activity"
+    android:background="@drawable/anhnen1"
     tools:context=".ProfileActivity">
 
-    <de.hdodenhof.circleimageview.CircleImageView
-        android:id="@+id/visit_profile_image"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="110dp"
-        android:src="@drawable/profile_image"
-        />
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/visit_profile_toolbar"
+        >
+    </include>
 
-    <TextView
-        android:id="@+id/visit_user_name"
+    <LinearLayout
+        android:id="@+id/dong2"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="user name"
-        android:layout_below="@+id/visit_profile_image"
+        android:layout_height="110dp"
+        android:layout_below="@+id/settings_toolbar"
+        android:layout_marginStart="15dp"
         android:layout_marginLeft="15dp"
+        android:layout_marginTop="200dp"
+        android:layout_marginEnd="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="5dp"
-        android:textAlignment="center"
-        android:textAllCaps="false"
-        android:textSize="18sp"
-        android:textStyle="bold"
-        />
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal">
 
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/visit_profile_image"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="15dp"
+            android:src="@drawable/profile_image"
+            app:civ_border_color="@color/colorPrimary"
+            app:civ_border_width="5dp" />
+            />
+
+        <TextView
+            android:id="@+id/visit_user_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="user name"
+            android:layout_below="@+id/visit_profile_image"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="50dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/visit_profile_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="đây là trạng thái hoạt động"
-        android:layout_below="@+id/visit_user_name"
+        android:layout_below="@+id/dong2"
         android:layout_marginLeft="15dp"
         android:layout_marginRight="15dp"
-        android:layout_marginTop="25dp"
+        android:layout_marginTop="5dp"
         android:textAlignment="center"
         android:textAllCaps="false"
-        android:textSize="25sp"
+        android:textSize="23sp"
         android:textStyle="bold"
         />
+    <LinearLayout
+        android:id="@+id/row_phone"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/visit_profile_status"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        >
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Số điện thoại:"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:textStyle="bold"
+
+            />
+        <TextView
+            android:id="@+id/visit_profile_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="+84399096665"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_sex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/row_phone"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Giới tính:"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:textStyle="bold"
+
+            />
+        <TextView
+            android:id="@+id/visit_profile_sex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Sex"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_ngaysinh"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/row_sex"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ngày sinh"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:textStyle="bold"
+
+            />
+        <TextView
+            android:id="@+id/visit_profile_ngaysinh"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="09/11/1999"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/row_diaChi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/row_ngaysinh"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Địa chỉ:"
+            android:layout_marginLeft="15dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            android:textStyle="bold"
+
+            />
+        <TextView
+            android:id="@+id/visit_profile_diChi"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Ha Noi"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="10dp"
+            android:textAlignment="center"
+            android:textAllCaps="false"
+            android:textSize="20dp"
+            />
+    </LinearLayout>
 
     <Button
         android:id="@+id/send_message_request_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/visit_profile_status"
-        android:layout_marginTop="15dp"
+        android:layout_below="@+id/row_diaChi"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="65dp"
         android:layout_marginRight="65dp"
         android:textColor="@android:color/background_light"
@@ -64,7 +232,6 @@
         android:text="Kết bạn"
         android:textAllCaps="false"
         />
-
 
     <Button
         android:id="@+id/decline_message_request_button"

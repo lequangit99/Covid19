@@ -120,7 +120,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
             public void onVerificationFailed(@NonNull FirebaseException e)
             {
                 loadingBar.dismiss();
-                Toast.makeText(PhoneLoginActivity.this, "Invalid Phone Number, Please enter correct phone number with your country code...", Toast.LENGTH_SHORT).show();
+                Toast.makeText(PhoneLoginActivity.this, "Nhập chính xác số điện thoại với mã vùng quốc gia.", Toast.LENGTH_SHORT).show();
 
                 SendVerificationCodeButton.setVisibility(View.VISIBLE);
                 InputPhoneNumber.setVisibility(View.VISIBLE);
@@ -165,7 +165,7 @@ public class PhoneLoginActivity extends AppCompatActivity {
                         else
                         {
                             String message = Objects.requireNonNull(task.getException()).toString();
-                            Toast.makeText(PhoneLoginActivity.this, "Error : "  +  message, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PhoneLoginActivity.this, "Lỗi : "  +  message, Toast.LENGTH_SHORT).show();
                         }
                     }
                 });

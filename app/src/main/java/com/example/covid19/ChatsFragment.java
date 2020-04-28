@@ -102,7 +102,6 @@ public class ChatsFragment extends Fragment
 
                                     holder.userName.setText(retName);
 
-
                                     if (dataSnapshot.child("userState").hasChild("state"))
                                     {
                                         String state = dataSnapshot.child("userState").child("state").getValue().toString();

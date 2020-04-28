@@ -1,9 +1,7 @@
 package com.example.covid19;
 
 
-import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,9 +48,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
         {
             super(itemView);
 
-            senderMessageText = itemView.findViewById(R.id.sender_messsage_text);
-            receiverMessageText = itemView.findViewById(R.id.receiver_message_text);
-            receiverProfileImage = itemView.findViewById(R.id.message_profile_image);
+            senderMessageText = (TextView) itemView.findViewById(R.id.sender_messsage_text);
+            receiverMessageText = (TextView) itemView.findViewById(R.id.receiver_message_text);
+            receiverProfileImage = (CircleImageView) itemView.findViewById(R.id.message_profile_image);
             messageReceiverPicture = itemView.findViewById(R.id.message_receiver_image_view);
             messageSenderPicture = itemView.findViewById(R.id.message_sender_image_view);
         }
@@ -76,7 +74,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
 
 
     @Override
-    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, final int i)
+    public void onBindViewHolder(@NonNull final MessageViewHolder messageViewHolder, int i)
     {
         String messageSenderId = mAuth.getCurrentUser().getUid();
         Messages messages = userMessagesList.get(i);
@@ -135,48 +133,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 messageViewHolder.receiverMessageText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
             }
         }
-        else if (fromMessageType.equals("image")){
-            if (fromUserID.equals(messageSenderId)){
-                messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
-                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageSenderPicture);
-            }
-            else {
-                messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
-                messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
-                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
-            }
-        }
-        else {
-            if (fromUserID.equals(messageSenderId)){
-                messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
-                messageViewHolder.messageSenderPicture.setBackgroundResource(R.drawable.file);
-
-                messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(i).getMessage()));
-                        messageViewHolder.itemView.getContext().startActivity(intent);
-                    }
-                });
-            }
-            else {
-                messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
-                messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
-
-                messageViewHolder.messageReceiverPicture.setBackgroundResource(R.drawable.file);
-
-                messageViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(userMessagesList.get(i).getMessage()));
-                        messageViewHolder.itemView.getContext().startActivity(intent);
-                    }
-                });
-            }
-        }
     }
-
-
 
 
     @Override

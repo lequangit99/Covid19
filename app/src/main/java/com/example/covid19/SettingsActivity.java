@@ -45,6 +45,7 @@ import java.util.HashMap;
 import java.util.Objects;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import es.dmoral.toasty.Toasty;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -190,13 +191,13 @@ public class SettingsActivity extends AppCompatActivity {
                             userStatus.setText(retrievesStatus);
                             soDienThoai.setText(retrievePhoneNumber);
                             if (retrieveSex.equals("nu")){
-                                rNu.isChecked();
+                                rNu.setChecked(true);
                             }
                             if (retrieveSex.equals("nam")){
-                                rNam.isChecked();
+                                rNam.setChecked(true);
                             }
                             if (retrieveSex.equals("khac")){
-                                rNu.isChecked();
+                                rKhac.setChecked(true);
                             }
                             ngaySinh.setText(retrieveNgaySinh);
                             diaChi.setText(retrieveDiaChi);
@@ -221,25 +222,10 @@ public class SettingsActivity extends AppCompatActivity {
         String setNgaySinh = ngaySinh.getText().toString();
         String setDiaChi = diaChi.getText().toString();
 
-        if (TextUtils.isEmpty(setUserName))
+        if (TextUtils.isEmpty(setUserName) || TextUtils.isEmpty(setStatus) || TextUtils.isEmpty(setStd) ||
+                TextUtils.isEmpty(setNgaySinh) || TextUtils.isEmpty(setDiaChi) || TextUtils.isEmpty(Sex))
         {
-            Toast.makeText(this, "Nhập vào tên của bạn", Toast.LENGTH_SHORT).show();
-        }
-        if (TextUtils.isEmpty(setStatus))
-        {
-            Toast.makeText(this, "Nhập vào trạng thái của bạn...", Toast.LENGTH_SHORT).show();
-        }
-        if (TextUtils.isEmpty(setStd))
-        {
-            Toast.makeText(this, "Nhập vào số điện thoại của bạn...", Toast.LENGTH_SHORT).show();
-        }
-        if (TextUtils.isEmpty(setNgaySinh))
-        {
-            Toast.makeText(this, "Vui lòng chọn ngày sinh", Toast.LENGTH_SHORT).show();
-        }
-        if (TextUtils.isEmpty(setDiaChi))
-        {
-            Toast.makeText(this, "Nhập vào đại chi của bạn...", Toast.LENGTH_SHORT).show();
+            Toasty.error(this, "Nhập vào đầy đủ thông tin",Toast.LENGTH_SHORT, true).show();
         }
         else
         {

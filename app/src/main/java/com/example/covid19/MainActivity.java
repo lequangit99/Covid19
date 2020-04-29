@@ -13,7 +13,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
@@ -126,7 +125,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 if ((dataSnapshot.child("name").exists())) {
-                    Toast.makeText(MainActivity.this, ":v Hello", Toast.LENGTH_SHORT).show();
                 } else {
                     SendToSettingsActivity();
                 }

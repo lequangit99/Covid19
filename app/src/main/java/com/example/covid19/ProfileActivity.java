@@ -118,9 +118,25 @@ public class ProfileActivity extends AppCompatActivity
                 {
                     String userName = dataSnapshot.child("name").getValue().toString();
                     String userstatus = dataSnapshot.child("status").getValue().toString();
+                    String retrievePhoneNumber = dataSnapshot.child("phone").getValue().toString();
+                    String retrieveNgaySinh = dataSnapshot.child("ngaysinh").getValue().toString();
+                    String retrieveSex = dataSnapshot.child("sex").getValue().toString();
+                    String retrieveDiaChi = dataSnapshot.child("diachi").getValue().toString();
 
                     userProfileName.setText(userName);
                     userProfileStatus.setText(userstatus);
+                    soDienThoai.setText(retrievePhoneNumber);
+                    if (retrieveSex.equals("nu")){
+                        Sex.setText("Nữ");
+                    }
+                    if (retrieveSex.equals("nam")){
+                        Sex.setText("Nam");
+                    }
+                    if (retrieveSex.equals("khac")){
+                        Sex.setText("Khác");
+                    }
+                    ngaySinh.setText(retrieveNgaySinh);
+                    diaChi.setText(retrieveDiaChi);
 
 
                     ManageChatRequests();

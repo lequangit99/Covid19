@@ -57,8 +57,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
     }
 
 
-
-
     @NonNull
     @Override
     public MessageViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i)
@@ -102,10 +100,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
             }
         });
 
-
-
-
-
         messageViewHolder.receiverMessageText.setVisibility(View.GONE);
         messageViewHolder.receiverProfileImage.setVisibility(View.GONE);
         messageViewHolder.senderMessageText.setVisibility(View.GONE);
@@ -133,8 +127,18 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MessageV
                 messageViewHolder.receiverMessageText.setText(messages.getMessage() + "\n \n" + messages.getTime() + " - " + messages.getDate());
             }
         }
+        else if (fromMessageType.equals("image")){
+            if (fromUserID.equals(messageSenderId)){
+                messageViewHolder.messageSenderPicture.setVisibility(View.VISIBLE);
+                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageSenderPicture);
+            }
+            else {
+                messageViewHolder.receiverProfileImage.setVisibility(View.VISIBLE);
+                messageViewHolder.messageReceiverPicture.setVisibility(View.VISIBLE);
+                Picasso.get().load(messages.getMessage()).into(messageViewHolder.messageReceiverPicture);
+            }
+        }
     }
-
 
     @Override
     public int getItemCount()

@@ -50,7 +50,6 @@ public class ChatsFragment extends Fragment
         // Inflate the layout for this fragment
         PrivateChatsView = inflater.inflate(R.layout.fragment_chats, container, false);
 
-
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         ChatsRef = FirebaseDatabase.getInstance().getReference().child("Contacts").child(currentUserID);
@@ -155,7 +154,6 @@ public class ChatsFragment extends Fragment
         chatsList.setAdapter(adapter);
         adapter.startListening();
     }
-
 
 
 

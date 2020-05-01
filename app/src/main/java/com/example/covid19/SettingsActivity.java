@@ -205,6 +205,12 @@ public class SettingsActivity extends AppCompatActivity {
                         else
                         {
                             userName.setVisibility(View.VISIBLE);
+                            try {
+                                String retrieveProfileImage = dataSnapshot.child("image").getValue().toString();
+                                Picasso.get().load(retrieveProfileImage).into(userProfileImage);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -246,7 +252,7 @@ public class SettingsActivity extends AppCompatActivity {
                             if (task.isSuccessful())
                             {
                                 SendToMainActivity();
-                                Toast.makeText(SettingsActivity.this, "Cập nhật thành công", Toast.LENGTH_SHORT).show();
+                                Toasty.success(SettingsActivity.this, "Cập nhật thành công",Toast.LENGTH_SHORT, true).show();
                             }
                             else
                             {
@@ -306,7 +312,8 @@ public class SettingsActivity extends AppCompatActivity {
                                         {
                                             if (task.isSuccessful())
                                             {
-                                                Toast.makeText(SettingsActivity.this, "Đăng ảnh thành công", Toast.LENGTH_SHORT).show();
+                                                Toasty.success(SettingsActivity.this, "Đăng ảnh thành công",Toast.LENGTH_SHORT, true).show();
+
                                                 loadingBar.dismiss();
                                             }
                                             else

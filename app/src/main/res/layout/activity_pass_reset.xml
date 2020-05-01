@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PassResetActivity">
+
+    <include
+        layout="@layout/app_bar_layout"
+        android:id="@+id/pass_reset_toolbar"
+        >
+    </include>
+
+    <TextView
+        android:id="@+id/thongbao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Nhập vào email bạn muốn đặt lại mật khẩu"
+        android:layout_below="@+id/pass_reset_toolbar"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="250dp"
+        android:textSize="20dp"
+        android:textStyle="bold">
+
+    </TextView>
+
+    <EditText
+        android:id="@+id/pass_reset_email"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@+id/thongbao"
+        android:inputType="textMultiLine"
+        android:hint="lequang@gmail.com"
+        android:textAlignment="center"
+        android:textColor="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        android:background="@drawable/inputs"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginTop="20dp"
+        android:padding="6dp"
+    />
+
+    <Button
+        android:id="@+id/pass_reset_button"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/pass_reset_email"
+        android:text="Đặt lại mật khẩu"
+        android:textAlignment="center"
+        android:textColor="@android:color/background_light"
+        android:textStyle="bold"
+        android:background="@drawable/buttons"
+        android:layout_marginStart="15dp"
+        android:layout_marginEnd="15dp"
+        android:padding="6dp"
+        android:layout_marginTop="20dp"
+        android:textAllCaps="false"
+        android:textSize="20sp"
+        android:layout_centerHorizontal="true"
+        />
+
+</RelativeLayout>

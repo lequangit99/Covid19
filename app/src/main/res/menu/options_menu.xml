@@ -17,6 +17,13 @@
     </item>
 
     <item
+        android:title="Thời tiết"
+        android:id="@+id/main_weather_option"
+        app:showAsAction="never">
+
+    </item>
+
+    <item
         android:title="Đăng xuất"
         android:id="@+id/main_logout_option"
         app:showAsAction="never">

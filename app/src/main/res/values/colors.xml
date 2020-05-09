@@ -4,4 +4,5 @@
     <color name="colorPrimaryDark">#0f4c75</color>
     <color name="colorAccent">#120136</color>
     <color name="nenChat">#f0f0f0</color>
+    <color name="textColor">#FFFFFF</color>
 </resources>

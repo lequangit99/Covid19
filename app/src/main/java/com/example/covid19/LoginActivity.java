@@ -8,26 +8,36 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.GoogleAuthProvider;
 
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseUser currentUser;
-    private Button LoginButton, PhoneLoginButton;
+    private Button LoginButton, PhoneLoginButton, GoogleLoginButton;
     private EditText UserEmail, UserPasswd;
     private TextView NewAcc, ForgetPasswd;
     private FirebaseAuth mAuth;
     private ProgressDialog progressDialog;
+    private GoogleSignInClient mGoogleSignInClient;
+    private final static int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,6 +86,7 @@ public class LoginActivity extends AppCompatActivity {
     private void InitializeFields() {
         LoginButton = findViewById(R.id.login_button);
         PhoneLoginButton = findViewById(R.id.phone_login_button);
+        GoogleLoginButton = findViewById(R.id.google_login_button);
         UserEmail = findViewById(R.id.login_email);
         UserPasswd = findViewById(R.id.login_password);
         NewAcc = findViewById(R.id.new_account);
@@ -137,4 +148,6 @@ public class LoginActivity extends AppCompatActivity {
             });
         }
     }
+
+
 }

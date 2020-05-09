@@ -148,6 +148,9 @@ public class MainActivity extends AppCompatActivity {
         if (item.getItemId() == R.id.main_find_friends_option) {
             SendToFindFriends();
         }
+        if (item.getItemId() == R.id.main_weather_option) {
+            SendToWeatherActivity();
+        }
         if (item.getItemId() == R.id.main_settings_option) {
             SendToSettingsActivity();
         }
@@ -162,6 +165,11 @@ public class MainActivity extends AppCompatActivity {
     private void SendToSettingsActivity() {
         Intent settingsIntent = new Intent(MainActivity.this, SettingsActivity.class);
         startActivity(settingsIntent);
+    }
+
+    private void SendToWeatherActivity() {
+        Intent weatherIntent = new Intent(MainActivity.this, WeatherActivity.class);
+        startActivity(weatherIntent);
     }
 
     private void SendToLoginActivity() {

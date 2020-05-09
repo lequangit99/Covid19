@@ -139,6 +139,21 @@
                 android:background="@drawable/buttons"
                 android:drawableStart="@drawable/phone"
                 />
+            <Button
+                android:id="@+id/google_login_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/phone_login_button"
+                android:padding="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="20dp"
+                android:layout_marginRight="20dp"
+                android:text="Tài khoản Google"
+                android:textAllCaps="false"
+                android:textSize="14sp"
+                android:textColor="@android:color/background_light"
+                android:background="@drawable/buttons"
+                />
 
         </RelativeLayout>
 
